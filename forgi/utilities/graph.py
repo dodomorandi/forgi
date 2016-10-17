@@ -32,7 +32,7 @@ if __name__ == '__main__':
     G = nx.Graph()
     G.add_edges_from(edges)
 
-    print shortest_cycle(G, 1)
-    print shortest_cycle(G, 3)
-    print shortest_cycle(G, 4)
+    print((shortest_cycle(G, 1)))
+    print((shortest_cycle(G, 3)))
+    print((shortest_cycle(G, 4)))
 

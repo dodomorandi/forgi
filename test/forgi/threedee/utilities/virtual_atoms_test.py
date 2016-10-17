@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 import unittest
 import forgi.threedee.model.coarse_grain as ftmc
 import forgi.threedee.model.similarity as ftme
@@ -28,7 +28,7 @@ def realatom_vatom_rmsd(cg):
             #    print( posCg, posPdb, cg.seq[posCg-1], cg.chain[posPdb] )
             #except KeyError as e: print(e)
             vas=cg.virtual_atoms(posCg)
-            for a, coords in vas.items():
+            for a, coords in list(vas.items()):
                 try:
                     rposs.append(cg.chain[posPdb][a].get_vector().get_array())
                     stemr.append(cg.chain[posPdb][a].get_vector().get_array())

@@ -63,7 +63,7 @@ def scale_colors(colors_dict, cmap = None, reverse = False):
         cmap = plt.get_cmap('Blues')
 
 
-    values = colors_dict.values()
+    values = list(colors_dict.values())
     min_value = min(values)
     max_value = max(values)
 

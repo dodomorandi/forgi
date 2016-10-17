@@ -10,7 +10,7 @@ class TestHelperFunctions(unittest.TestCase):
         self.assertEqual(ftud.dssr_to_pdb_atom_id("A.5BU36"), ("A", (" ", 36, " ")))
         self.assertEqual(ftud.dssr_to_pdb_atom_id("C.C47^M"), ("C", (" ", 47, "M")))
         self.assertEqual(ftud.dssr_to_pdb_atom_id("C.5BU47^M"), ("C",(" ", 47, "M")))
-        self.assertEqual(ftud.dssr_to_pdb_atom_id(u'A.C1'), ("A",(" ", 1, " ")))
+        self.assertEqual(ftud.dssr_to_pdb_atom_id('A.C1'), ("A",(" ", 1, " ")))
 
 
 class TestCoaxialStacks(unittest.TestCase):

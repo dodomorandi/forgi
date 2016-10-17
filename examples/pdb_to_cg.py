@@ -46,7 +46,7 @@ def main():
     cg = ftmc.from_pdb(args[0], intermediate_file_dir=options.dump_all, 
                        remove_pseudoknots=not options.pseudoknots,
                       chain_id = options.chain)
-    print cg.to_cg_string()
+    print((cg.to_cg_string()))
 
 if __name__ == '__main__':
     main()

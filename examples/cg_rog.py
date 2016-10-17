@@ -29,7 +29,7 @@ def main():
 
 
     coords = cg1.get_ordered_stem_poss()
-    print ftmd.radius_of_gyration(coords)
+    print((ftmd.radius_of_gyration(coords)))
 if __name__ == '__main__':
     main()
 

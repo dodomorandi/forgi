@@ -47,7 +47,7 @@ def main():
     bg.name = lines[0].strip().strip('>')
     bg.seq = lines[-2].strip()
 
-    print bg.to_bg_string()
+    print((bg.to_bg_string()))
 
 if __name__ == "__main__":
     main()

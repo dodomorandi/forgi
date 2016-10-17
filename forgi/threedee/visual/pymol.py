@@ -128,7 +128,7 @@ class PymolPrinter:
         else:
             color = [str(c) for c in color[:3]]
 
-        print >>sys.stderr, "color:", color
+        print("color:", color, file=sys.stderr)
         #assert(not allclose(p, n))
         self.new_segments += [(np.array(p), np.array(n), color, width, text, key)]
 
@@ -362,7 +362,7 @@ class PymolPrinter:
         f.close()
 
     def output_pymol_file(self):
-        print self.pymol_string()
+        print(self.pymol_string())
 
     def reset(self):
         self.segments = []
@@ -567,8 +567,8 @@ class PymolPrinter:
     def add_encompassing_cylinders(self, cg, radius=7.):
         cylinders_to_stems = ftug.get_encompassing_cylinders(cg, radius)
 
-        for stems in cylinders_to_stems.values():
-            print "stems:", stems
+        for stems in list(cylinders_to_stems.values()):
+            print("stems:", stems)
 
             points = []
             for s in stems:
@@ -589,7 +589,7 @@ class PymolPrinter:
             self.add_segment(start_point, end_point, 'white', width=4, text='', key='')
 
 
-        print >>sys.stderr, "YOOOOOOOOOOOOOOOOOOOOOOO"
+        print("YOOOOOOOOOOOOOOOOOOOOOOO", file=sys.stderr)
 
     def get_element_color(self, elem_name):
         '''
@@ -636,7 +636,7 @@ class PymolPrinter:
     def coordinates_to_pymol(self, cg):
         loops = list(cg.hloop_iterator())
 
-        for key in cg.coords.keys():
+        for key in list(cg.coords.keys()):
             if self.only_elements is not None:
                 if key not in self.only_elements:
                     continue
@@ -694,7 +694,7 @@ class PymolPrinter:
                     self.add_segment(p, n, color, 1.0, key, key=key)
 
         if self.add_longrange:
-            for key1 in cg.longrange.keys():
+            for key1 in list(cg.longrange.keys()):
                 for key2 in cg.longrange[key1]:
                     if self.only_elements is not None:
                         if key1 not in self.only_elements or key2 not in self.only_elements:
@@ -735,14 +735,14 @@ class PymolPrinter:
 
             atom_width = 0.5
             for i,r in enumerate(sorted(va.keys())):
-                for a in va[r].keys():
+                for a in list(va[r].keys()):
                     if self.rainbow:
                         import matplotlib
                         matplotlib.use('Agg')
                         import matplotlib.pyplot as plt
                         cmap = plt.get_cmap('gist_rainbow')
                         self.add_sphere(va[r][a], 
-                                        color_rgb = cmap(i / float(len(va.keys()))), 
+                                        color_rgb = cmap(i / float(len(list(va.keys())))), 
                                         width=atom_width)
                     else:
                         d = cg.get_node_from_residue_num(r)
@@ -759,22 +759,22 @@ class PymolPrinter:
                             self.add_sphere(va[r][a], 'blue', width=atom_width)
 
         if self.basis:
-            for d in cg.defines.keys():
+            for d in list(cg.defines.keys()):
                 origin, basis = ftug.element_coord_system(cg, d)
 
                 self.add_segment(origin, origin + 7. * basis[1], 'purple', 2., key=key)
 
-        print >>sys.stderr, "energy_function:", self.energy_function
+        print("energy_function:", self.energy_function, file=sys.stderr)
         # print the contributions of the energy function, if one is specified
         if self.energy_function is not None:
-            print >>sys.stderr, "key"
+            print("key", file=sys.stderr)
             sum_energy = 0.
 
             e_func = self.energy_function
             e_func_iter = e_func.interaction_energy_iter(cg, background=False)
             int_energies = list(e_func_iter)
             max_energy = max(int_energies, key=lambda x: x[1])
-            print >>sys.stderr, "max_energy:", max_energy
+            print("max_energy:", max_energy, file=sys.stderr)
 
             for (interaction, energy) in int_energies:
                 (p, n) = (cg.get_point(interaction[0]),
@@ -868,9 +868,9 @@ class PymolPrinter:
     def flex_to_pymol(self, cg, flex_file):
         flex_stats = self.load_flex_stats(flex_file)
 
-        for key in cg.defines.keys():
+        for key in list(cg.defines.keys()):
             if key[0] != 's':
-                if key in cg.coords.keys():
+                if key in list(cg.coords.keys()):
                     coords = cg.coords[key]
                     p = (coords[1] + coords[0]) / 2.
 
@@ -892,8 +892,8 @@ class PymolPrinter:
 
     def centers_to_pymol(self, cg):
 
-        for key in cg.defines.keys():
-            if key in cg.coords.keys():
+        for key in list(cg.defines.keys()):
+            if key in list(cg.coords.keys()):
                 coords = cg.coords[key]
                 p = (coords[1] + coords[0]) / 2.
 

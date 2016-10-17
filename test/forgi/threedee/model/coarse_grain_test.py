@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
+
+
 
 import numpy as np
 import numpy.testing as nptest
@@ -33,15 +33,15 @@ def cg_from_sg(cg, sg):
     for d in sg:
         new_cg.defines[d] = cg.defines[d]
 
-        if d in cg.coords.keys():
+        if d in list(cg.coords.keys()):
             new_cg.coords[d] = cg.coords[d]
-        if d in cg.twists.keys():
+        if d in list(cg.twists.keys()):
             new_cg.twists[d] = cg.twists[d]
-        if d in cg.longrange.keys():
+        if d in list(cg.longrange.keys()):
             new_cg.longrange[d] = cg.longrange[d]
 
         for x in cg.edges[d]:
-            if x in new_cg.defines.keys():
+            if x in list(new_cg.defines.keys()):
                 new_cg.edges[d].add(x)
                 new_cg.edges[x].add(d)
 
@@ -60,12 +60,12 @@ class CoarseGrainTest(tfgb.GraphVerification):
         self.longMessage = True
 
     def compare_bg_to_cg(self, bg, cg):
-        for d in bg.defines.keys():
-            self.assertTrue(d in cg.defines.keys())
+        for d in list(bg.defines.keys()):
+            self.assertTrue(d in list(cg.defines.keys()))
             self.assertTrue(bg.defines[d] == cg.defines[d])
 
-        for e in bg.edges.keys():
-            self.assertTrue(e in cg.edges.keys())
+        for e in list(bg.edges.keys()):
+            self.assertTrue(e in list(cg.edges.keys()))
             self.assertTrue(bg.edges[e] == cg.edges[e])
 
     def check_cg_integrity(self, cg):
@@ -171,7 +171,7 @@ class CoarseGrainTest(tfgb.GraphVerification):
         self.check_cg_integrity(cg)
 
         # self.assertEqual(len(cg.coords), 8)
-        for key in cg.defines.keys():
+        for key in list(cg.defines.keys()):
             self.assertTrue(key in cg.coords)
 
     def test_from_and_to_cgstring(self):

@@ -5,7 +5,7 @@ import Bio.PDB as bpdb
 import forgi.utilities.debug as fud
 import forgi.threedee.utilities.vector as ftuv
 
-backbone_atoms_real = ['P', "O5'", "C5'", "C4'", "C3'", "O3'"] 
+backbone_atoms_real = ['P', "O5'", "C5'", "C4'", "C3'", "O3'"]
 backbone_atoms = ['P', 'O5*', 'C5*', 'C4*', 'C3*', 'O3*']
 backbone_atoms += ['P', "O5'", "C5'", "C4'", "C3'", "O3'"]
 ring_atoms = ['C4*', 'C3*', 'C2*', 'C1*', 'O4*']
@@ -29,7 +29,7 @@ side_chain_atoms['G'] = ['N1', 'C2', 'N2', 'N3', 'C4', 'C5', 'C6', 'O6', 'N7', '
 all_side_chains = set(side_chain_atoms['U'] + side_chain_atoms['C'] + side_chain_atoms['A'] + side_chain_atoms['G'])
 
 all_rna_atoms = backbone_atoms + ring_atoms
-for v in side_chain_atoms.values():
+for v in list(side_chain_atoms.values()):
     all_rna_atoms += v
 all_rna_atoms = set(all_rna_atoms)
 
@@ -237,7 +237,7 @@ def pdb_rmsd(c1, c2, sidechains=False, superimpose=True, apply_sup=False):
 
     #c1_list.sort(key=lambda x: x.id[1])
     #c2_list.sort(key=lambda x: x.id[1])
-    
+
     for r1,r2 in zip(c1_list, c2_list):
         if sidechains:
             anames = backbone_atoms + a_names[c1[i].resname.strip()]
@@ -246,14 +246,14 @@ def pdb_rmsd(c1, c2, sidechains=False, superimpose=True, apply_sup=False):
         #anames = a_5_names + a_3_names
 
         for a in anames:
-	    try:
-		at1 = r1[a]
-		at2 = r2[a]
+            try:
+                at1 = r1[a]
+                at2 = r2[a]
 
-		all_atoms1 += [at1]
-		all_atoms2 += [at2]
-	    except:
-	        continue
+                all_atoms1 += [at1]
+                all_atoms2 += [at2]
+            except:
+                continue
 
     #print "rmsd len:", len(all_atoms1), len(all_atoms2)
     if superimpose:
@@ -306,7 +306,7 @@ def renumber_chain(chain, resids=None):
     '''
     Renumber all the residues in this chain so that they start at 1 and end at
     len(chain)
-    
+
     :param chain: A Bio.PDB.Chain object
     :return: The same chain, but with renamed nucleotides
     '''
@@ -331,27 +331,27 @@ def renumber_chain(chain, resids=None):
     return chain
 
 def output_chain(chain, filename, fr=None, to=None):
-    '''                                                                                                            
-    Dump a chain to an output file. Remove the hydrogen atoms.                                                     
-    
+    '''
+    Dump a chain to an output file. Remove the hydrogen atoms.
+
     :param chain: The Bio.PDB.Chain to dump.
     :param filename: The place to dump it.
-    '''                                                                                                            
+    '''
     class HSelect(bpdb.Select):
         def accept_atom(self, atom):
-            if atom.name.find('H') >= 0:                                                                           
-                return False                                                                                       
+            if atom.name.find('H') >= 0:
+                return False
             else:
-                return True                                                                                        
-    m = bpdb.Model.Model(' ') 
+                return True
+    m = bpdb.Model.Model(' ')
     s = bpdb.Structure.Structure(' ')
 
     m.add(chain)
-    s.add(m)    
+    s.add(m)
 
     io = bpdb.PDBIO()
     io.set_structure(s)
-    io.save(filename, HSelect()) 
+    io.save(filename, HSelect())
 
 def get_particular_chain(in_filename, chain_id, parser=None):
     '''
@@ -500,12 +500,12 @@ def load_structure(pdb_filename):
     This chain will be modified so that all hetatms are removed, modified
     residues will be renamed to regular residues, etc...
     '''
-    chain = get_biggest_chain(pdb_filename) 
+    chain = get_biggest_chain(pdb_filename)
     chain = rename_modified_ress(chain)
     chain = rename_rosetta_atoms(chain)
     chain = remove_hetatm(chain)
     chain = renumber_chain(chain)
-     
+
     return chain
 
 def interchain_contacts(struct):

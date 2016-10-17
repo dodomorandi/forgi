@@ -9,4 +9,4 @@ class AverageAtomPositionsTest(unittest.TestCase):
     def test_key1(self):
         key = "h 9 -1 0 7 C4'"
 
-        self.assertTrue(key in ftua.avg_atom_poss.keys())
+        self.assertTrue(key in list(ftua.avg_atom_poss.keys()))

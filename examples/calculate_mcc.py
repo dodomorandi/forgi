@@ -28,9 +28,9 @@ def main():
     confusion_matrix = ftme.confusion_matrix(cg1, cg2)
 
     
-    print "confusion_matrix:", confusion_matrix
-    print "mcc:", ftme.mcc(confusion_matrix)
-    print "rmsd:", ftme.cg_rmsd(cg1, cg2)
+    print(("confusion_matrix:", confusion_matrix))
+    print(("mcc:", ftme.mcc(confusion_matrix)))
+    print(("rmsd:", ftme.cg_rmsd(cg1, cg2)))
 
 if __name__ == '__main__':
     main()

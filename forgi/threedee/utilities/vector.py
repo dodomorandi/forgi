@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from __future__ import division
+
 import timeit, sys
 
 import forgi.threedee.utilities.cytvec as ftuc
@@ -596,9 +596,9 @@ def seg_intersect(line1, line2) :
     a2=np.array(a2)
     b1=np.array(b1)
     b2=np.array(b2)
-    if max(map(len, [a1,a2,b1,b2]))!=2:
+    if max(list(map(len, [a1,a2,b1,b2])))!=2:
         raise ValueError("Expecting only 2-dimensional vectors. Found higher-dimensional vector: a1={}, a2={}, b1={}, b2={}".format(a1,a2,b1,b2))
-    if min(map(len, [a1,a2,b1,b2]))!=2:
+    if min(list(map(len, [a1,a2,b1,b2])))!=2:
         raise ValueError("Expecting only 2-dimensional vectors. Found lower-dimensional vector.")
     if (a1==a2).all() or (b1==b2).all(): raise ValueError("Start and end of a line must not be equal! a1={}, a2={}, b1={}, b2={}".format(a1,a2,b1,b2))
     dxa=a2[0]-a1[0]
@@ -853,7 +853,7 @@ def closest_point_on_seg(seg_a, seg_b, circ_pos):
     mag = math.sqrt(sum(seg_v * seg_v))
 
     if mag <= 0:
-        raise ValueError, "Invalid segment length"
+        raise ValueError("Invalid segment length")
     seg_v_unit = seg_v / mag
     proj = pt_v.dot(seg_v_unit)
     if proj <= 0:
@@ -878,7 +878,7 @@ def segment_circle(seg_a, seg_b, circ_pos, circ_rad):
     if m > circ_rad:
         return vec(0, 0)
     if mag(dist_v) <= 0:
-        raise ValueError, "Circle's center is exactly on segment"
+        raise ValueError("Circle's center is exactly on segment")
     offset = dist_v / mag(dist_v) * (circ_rad - mag(dist_v))
     return offset
 
@@ -1052,10 +1052,10 @@ def GetPointsEquiAngularlyDistancedOnSphere(numberOfPoints=45):
     ptsOnSphere =[]
     for k in range( 0, numberOfPoints): 
         r    = math.sqrt(1.0-z*z)
-        ptNew = (math.cos(long)*r, math.sin(long)*r, z)
+        ptNew = (math.cos(int)*r, math.sin(int)*r, z)
         ptsOnSphere.append( ptNew )
         z    = z - dz
-        long = long + dlong
+        long = int + dlong
 
     return ptsOnSphere
 

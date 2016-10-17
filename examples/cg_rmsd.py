@@ -1,11 +1,11 @@
 #!/usr/bin/python
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip) #future package
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 
 
 import sys
@@ -21,9 +21,9 @@ def main(args):
     if len(args.compareTo)==1:
         cg1 = ftmc.CoarseGrainRNA(args.reference[0])
         cg2 = ftmc.CoarseGrainRNA(args.compareTo[0])
-        print (ftms.cg_rmsd(cg1, cg2))
+        print((ftms.cg_rmsd(cg1, cg2)))
     else:
-        print ("{:15}\t{:6}\t{:6}\t{:6}".format("filename","RMSD", "dRMSD", "ACC"))
+        print(("{:15}\t{:6}\t{:6}\t{:6}".format("filename","RMSD", "dRMSD", "ACC")))
         ref_cg = ftmc.CoarseGrainRNA(args.reference[0])
         reference = ref_cg.get_ordered_virtual_residue_poss()
         acc_calc = ftms.AdjacencyCorrelation(ref_cg)
@@ -33,7 +33,7 @@ def main(args):
             rmsd  = ftur.rmsd(reference, curr_vress)
             drmsd = ftur.drmsd(reference, curr_vress)
             acc   = ftms.mcc(acc_calc.evaluate(cg))
-            print ("{:15}\t{:6.3f}\t{:6.3f}\t{:6.3f}".format(filename[-15:], rmsd, drmsd, acc))
+            print(("{:15}\t{:6.3f}\t{:6.3f}\t{:6.3f}".format(filename[-15:], rmsd, drmsd, acc)))
 
 
 parser = argparse.ArgumentParser(description="Calculate the RMSD between two or more coarse grain models")

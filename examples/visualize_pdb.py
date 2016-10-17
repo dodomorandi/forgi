@@ -50,7 +50,7 @@ def main():
         sys.exit(1)
 
     if not op.exists(args[0]):
-        print >>sys.stderr, "File doesn't exist: %s" % (args[0])
+        print("File doesn't exist: %s" % (args[0]), file=sys.stderr)
         sys.exit(1)
 
 
@@ -73,7 +73,7 @@ def main():
     #sys.exit(1)
     pp.coordinates_to_pymol(cg)
     pp.print_text = options.text
-    print >>sys.stderr, "virtual_residues:", options.virtual_residues
+    print("virtual_residues:", options.virtual_residues, file=sys.stderr)
     #pp.print_text = False
     #pp.output_pymol_file()
 

@@ -39,7 +39,7 @@ def main():
             angles += [(rn, angle)]
 
     for rn, angle in sorted(angles):
-        print "{}:{}".format(rn, angle)
+        print(("{}:{}".format(rn, angle)))
 
 if __name__ == '__main__':
     main()

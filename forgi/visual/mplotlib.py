@@ -59,7 +59,7 @@ def circles(x, y, s, c='b', ax=None, vmin=None, vmax=None, **kwargs):
     if ax is None:
         ax = plt.gca()    
 
-    if isinstance(c,basestring):
+    if isinstance(c,str):
         color = c     # ie. use colors.colorConverter.to_rgba_array(c)
     else:
         color = None  # use cmap, norm after collection is created
@@ -92,7 +92,7 @@ def plot_rna(cg, ax=None, offset=(0,0)):
                    offset by the current width of the plot
     :return: (ax, coords) The axes and the coordinates for each nucleotide
     '''
-    print "plotting RNA..."
+    print("plotting RNA...")
     import RNA
 
     RNA.cvar.rna_plot_type = 1

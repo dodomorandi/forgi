@@ -57,11 +57,11 @@ def main(args):
     cg_rmsds[0]=0.
 
     if "," in args.max_diff:
-        diffs=map(int,args.max_diff.split(","))
+        diffs=list(map(int,args.max_diff.split(",")))
     else:
-        diffs=range(1,int(args.max_diff)+1)
+        diffs=list(range(1,int(args.max_diff)+1))
     for diff in diffs:
-        print("diff {}".format(diff))
+        print(("diff {}".format(diff)))
         prmsd=0
         cgrmsd=0
         count=0
@@ -80,8 +80,8 @@ def main(args):
             cg_rmsds[diff]=cgrmsd/count
         if pcount:
             p_rmsds[diff]=prmsd/pcount
-    print "projection RMSDs:", p_rmsds
-    print "3D-RMSDs:", cg_rmsds
+    print(("projection RMSDs:", p_rmsds))
+    print(("3D-RMSDs:", cg_rmsds))
     import matplotlib.pyplot as plt
     if args.target_structure and args.hausdorff_reference:
         fig,(ax,axT, axH)=plt.subplots(3)
@@ -151,8 +151,8 @@ def main(args):
         leg.get_frame().set_linewidth(0.0)
         plt.subplots_adjust(hspace=0.4)
 
-    p_rmsds=np.array(p_rmsds.items())
-    cg_rmsds=np.array(cg_rmsds.items())
+    p_rmsds=np.array(list(p_rmsds.items()))
+    cg_rmsds=np.array(list(cg_rmsds.items()))
     ax.plot(p_rmsds[:,0]*args.step_size, p_rmsds[:,1], label="Projection",color="green", marker="o")
     ax.plot(cg_rmsds[:,0]*args.step_size, cg_rmsds[:,1], label="3D", color="blue", marker="o")
     ax.set_title("Average RMSD between structures X steps apart.")

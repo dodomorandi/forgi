@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 __metaclass__ = type #New style classes in Python 2.x
 
 import argparse, random, math, sys
@@ -28,7 +28,8 @@ import multiprocessing
 from functools import partial
 
 
-def async_calculation((ref_img, ref_box), numFiles, filenames):
+def async_calculation(xxx_todo_changeme, numFiles, filenames):
+    (ref_img, ref_box) = xxx_todo_changeme
     try:
         distances=[]
         for j in range(numFiles):
@@ -37,10 +38,11 @@ def async_calculation((ref_img, ref_box), numFiles, filenames):
             distances.append(distance)
         return distances
     except KeyboardInterrupt:
-        print("In worker {}: Keyboard Interrupt".format(id(ref_img)))
+        print(("In worker {}: Keyboard Interrupt".format(id(ref_img))))
         return 
 
-def parallel_localOpt((ref_img, ref_box), numFiles, filenames):
+def parallel_localOpt(xxx_todo_changeme1, numFiles, filenames):
+    (ref_img, ref_box) = xxx_todo_changeme1
     try:
         distances=[]
         for j in range(numFiles):
@@ -49,7 +51,7 @@ def parallel_localOpt((ref_img, ref_box), numFiles, filenames):
             distances.append(distance)
         return distances
     except KeyboardInterrupt:
-        print("In worker {}: Keyboard Interrupt".format(id(ref_img)))
+        print(("In worker {}: Keyboard Interrupt".format(id(ref_img))))
         return
 
 def get_parser():
@@ -113,11 +115,11 @@ if __name__=="__main__":
             if args.global_search or cg.project_from is None:
                 distance, img, params = fph.globally_minimal_distance(ref_img, args.scale, cg)
                 fname = os.path.basename(f)
-                print ("{}:\t{} distance (projected from {}, rotated by {}, offset {}. Globally optimized)".format(fname, distance, params[0], params[1], params[2] ))
+                print(("{}:\t{} distance (projected from {}, rotated by {}, offset {}. Globally optimized)".format(fname, distance, params[0], params[1], params[2] )))
             else:
                 distance, img, params = fph.try_parameters(ref_img, args.scale, cg)
                 fname = os.path.basename(f)
-                print ("{}:\t{} distance (projected from {}, rotated by {}, offset {}. Locally optimized)".format(fname, distance, params[0], params[1], params[2]))
+                print(("{}:\t{} distance (projected from {}, rotated by {}, offset {}. Locally optimized)".format(fname, distance, params[0], params[1], params[2])))
         if args.show:
             fig, ax=plt.subplots(2)
             ax[0].imshow(ref_img, interpolation="none", cmap='gray')
@@ -171,10 +173,10 @@ if __name__=="__main__":
                     distance, img, _ = fph.globally_minimal_distance(ref_img, ref_box[1]-ref_box[0], cg)
                     distances[i,j]=distance"""
         except BaseException as e:
-            print("Programm crashing because of a {}".format(type(e)))
+            print(("Programm crashing because of a {}".format(type(e))))
             print("Distances calculated so far:")
             np.set_printoptions(threshold='nan')
-            print(", ".join(os.path.basename(x) for x in args.files))
+            print((", ".join(os.path.basename(x) for x in args.files)))
             print(distances)
             pool.terminate()
             print("terminated pool")

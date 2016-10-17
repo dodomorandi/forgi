@@ -73,9 +73,9 @@ def main():
                                                        int(255 * chosen_color[1]),
                                                        int(255 * chosen_color[2]))
 
-    print template.format(cg.to_dotbracket_string(),
+    print((template.format(cg.to_dotbracket_string(),
                           cg.seq,
-                          out_str)
+                          out_str)))
 
 
 

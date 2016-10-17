@@ -79,7 +79,7 @@ class LoopStat:
             try:
                 self.parse_line(line)
             except:
-                print >>sys.stderr, "Error parsing line:", line
+                print("Error parsing line:", line, file=sys.stderr)
 
     def parse_line(self, line):
         '''
@@ -97,7 +97,7 @@ class LoopStat:
         self.r = float(parts[3])
         self.u = float(parts[4])
         self.v = float(parts[5])
-        self.define = map(int, parts[6:])
+        self.define = list(map(int, parts[6:]))
 
     def __str__(self):
         return "pdb_name: %s bp: %d phys_length: %f define: %s" % (self.pdb_name, self.bp_length, 
@@ -228,7 +228,7 @@ class AngleStat:
             # have an unpaired base
             assert(def_len > 0)
 
-        self.define = map(int,parts[11:11 + def_len])
+        self.define = list(map(int,parts[11:11 + def_len]))
         self.seqs = parts[11+def_len:]
 
     def orientation_params(self):
@@ -330,8 +330,8 @@ class RandomAngleStats():
                  maximum and minimum no greater than the largest
                  and least values in that column, respectively.
         '''
-        mins = map(min,data.T)
-        maxs = map(max,data.T)
+        mins = list(map(min,data.T))
+        maxs = list(map(max,data.T))
         
         def bounded_uniform():
             return [nr.uniform(i,x) for i,x in zip(mins, maxs)]
@@ -346,7 +346,7 @@ class RandomAngleStats():
         from the discrete statistics.
         '''
         import scipy.stats as ss
-        for key1,key2,key3 in discrete_angle_stats.keys():
+        for key1,key2,key3 in list(discrete_angle_stats.keys()):
             dims = (key1, key2, key3)
             data = []
 
@@ -361,7 +361,7 @@ class RandomAngleStats():
             try:
                 self.cont_stats[dims] = self.create_random_function(np.array(data))
             except np.linalg.LinAlgError as lae:
-                print >>sys.stderr, "Singular matrix, dimensions:", dims
+                print("Singular matrix, dimensions:", dims, file=sys.stderr)
 
     def sample_stats(self, dims):
         '''
@@ -409,7 +409,7 @@ class ContinuousAngleStats():
             each one containing and AngleStats structure.
         '''
         import scipy.stats as ss
-        for key1,key2,key3 in discrete_angle_stats.keys():
+        for key1,key2,key3 in list(discrete_angle_stats.keys()):
             dims = (key1, key2, key3)
             data = []
 
@@ -427,7 +427,7 @@ class ContinuousAngleStats():
             try:
                 self.cont_stats[dims] = ss.gaussian_kde(np.array(data).T)
             except np.linalg.LinAlgError as lae:
-                print >>sys.stderr, "Singular matrix, dimensions:", dims
+                print("Singular matrix, dimensions:", dims, file=sys.stderr)
 
     def sample_stats(self, dims):
         '''
@@ -543,7 +543,7 @@ def get_angle_stat_dims(s1, s2, angle_type, min_entries=1):
     available_stats = []
     angle_stats = get_angle_stats()
 
-    for (k1,k2,k3) in angle_stats.keys():
+    for (k1,k2,k3) in list(angle_stats.keys()):
         if k3 == angle_type:# and len(angle_stats[(k1,k2,k3)]) >= min_entries: #BT: I think this should't be here.
             dist = m.sqrt((k1 - s1) ** 2 + (k2 - s2) ** 2)
             available_stats += [(dist, (k1,k2,k3))]
@@ -554,7 +554,7 @@ def get_angle_stat_dims(s1, s2, angle_type, min_entries=1):
 def get_one_d_stat_dims(d, stats, min_entries=1):
     available_stats = []
 
-    for k in stats.keys():
+    for k in list(stats.keys()):
         available_stats += [(abs(d - k), k)]
 
     available_stats.sort()
@@ -722,7 +722,7 @@ class ClusteredAngleStats(object):
         """
         return [ rand.choice(x) for x in self._stats_dict[key] ]
     def keys(self):
-        return self._stats_dict.keys()
+        return list(self._stats_dict.keys())
 
     def lookup_stat(self, stat):
         key = (stat.dim1, stat.dim2, stat.ang_type)
@@ -752,7 +752,7 @@ class ClusteredAngleStats(object):
         :param ang_type: angle_type of the query key.
         """
         available_stats = []
-        for (k1,k2,k3) in self.keys():
+        for (k1,k2,k3) in list(self.keys()):
             if k3 == ang_type:
                dist = m.sqrt((k1 - dim0) ** 2 + (k2 - dim1) ** 2)
                available_stats += [(dist, (k1,k2,k3))]
@@ -816,8 +816,8 @@ class ConformationStats(object):
                     dims = get_angle_stat_dims(dims[0], dims[1], 
                                                ang_type, min_entries=min_entries)
             except IndexError:
-                print >>sys.stderr, "Error in sample_stats:"
-                print >>sys.stderr, "elem:", elem, "dims:", dims, "ang_type:", ang_type
+                print("Error in sample_stats:", file=sys.stderr)
+                print("elem:", elem, "dims:", dims, "ang_type:", ang_type, file=sys.stderr)
                 raise
         elif elem[0] == 'h':
             dims = dims[0]
@@ -884,7 +884,7 @@ class FilteredConformationStats(ConformationStats):
                 define_len = int(row[2])
                 pdb_id = row[1]
                 dims = tuple(map(int, row[3:5]))
-                define = map(int, row[5:5 + define_len])
+                define = list(map(int, row[5:5 + define_len]))
 
                 # get filtered stats for each type of angle
                 ang_types = [1,-1]

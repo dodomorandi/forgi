@@ -23,7 +23,7 @@ def align_cgs(cgs):
 
     The points representing each coarse grain RNA molecule
     will be the virtual residues.
-    
+
     @param cgs: A list of CoarseGrainRNA structures.
     @return: Nothing, the cgs are modified in place
     '''
@@ -34,7 +34,7 @@ def align_cgs(cgs):
         crds1 = ftuv.center_on_centroid(ftug.bg_virtual_residues(cg))
 
         rot_mat = ftur.optimal_superposition(crds0, crds1)
-        for k in cg.coords.keys():
+        for k in list(cg.coords.keys()):
             cg.coords[k] = (np.dot(rot_mat, cg.coords[k][0] - centroid1),
                             np.dot(rot_mat, cg.coords[k][1] - centroid1))
 
@@ -94,11 +94,11 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    print "hi"
+    print("hi")
     if len(args) < num_args:
         parser.print_help()
         sys.exit(1)
-    print "hi1"
+    print("hi1")
 
     pp = cvp.PymolPrinter()
     pp.stem_color = options.stem_color
@@ -134,7 +134,7 @@ def main():
 
         to_color_nodes = options.color_gradual.split(',')
         for i,node in enumerate(to_color_nodes):
-            print node, cmap(i / float(len(to_color_nodes)))
+            print(node, cmap(i / float(len(to_color_nodes))))
             pp.element_specific_colors[node] = cmap(i / float(len(to_color_nodes)))
 
     for i, cg in enumerate(cgs):
@@ -191,10 +191,10 @@ def main():
 
         pp.add_sphere(mid1, 'green', width=2)
         pp.add_sphere(mid2, 'red', width=2)
-        
 
-    with tf.NamedTemporaryFile() as f:
-        with tf.NamedTemporaryFile(suffix='.pml') as f1:
+
+    with tf.NamedTemporaryFile(mode="w+") as f:
+        with tf.NamedTemporaryFile(mode="w+", suffix='.pml') as f1:
             f.write(pp.pymol_string())
             f.flush()
 
@@ -213,7 +213,7 @@ def main():
             f1.write(pymol_cmd)
             f1.flush()
 
-            print "f1.name:", f1.name
+            print("f1.name:", f1.name)
 
             if options.batch:
                 p = sp.Popen(['pymol', '-cq', f1.name], stdout=sp.PIPE, stderr=sp.PIPE)
@@ -221,7 +221,7 @@ def main():
                 p = sp.Popen(['pymol', f1.name], stdout=sp.PIPE, stderr=sp.PIPE)
 
             out, err = p.communicate()
-            print >>sys.stderr, "err:", err
+            print("err:", err, file=sys.stderr)
 
 if __name__ == '__main__':
     main()

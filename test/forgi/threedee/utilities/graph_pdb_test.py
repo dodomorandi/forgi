@@ -106,8 +106,8 @@ class TestGraphPDB(unittest.TestCase):
         #Assert that any two atoms of the same base within reasonable distance to each other
         #(https://en.wikipedia.org/wiki/Bond_length says than a CH-bond is >= 1.06A)
         for va in bases_to_test:
-            for k1, v1 in va.items():
-                for k2, v2 in va.items():
+            for k1, v1 in list(va.items()):
+                for k2, v2 in list(va.items()):
                     dist=ftuv.magnitude(v1-v2)
                     self.assertLess(dist, 30, msg="Nucleotide too big: "
                                     "Distance between {} and {} is {}".format(k1, k2, dist))
@@ -161,12 +161,12 @@ class TestOrientation(unittest.TestCase):
 class TestDistanceCalculation(unittest.TestCase):
     def setUp(self):
         self.rs_random_281=ftmc.from_pdb('test/forgi/threedee/data/RS_random_281_S_0.pdb')
-        for key in self.rs_random_281.defines.keys():
+        for key in list(self.rs_random_281.defines.keys()):
           if key[0] =="s":
             ftug.add_virtual_residues(self.rs_random_281, key)
         self.minimal_multiloop = ftmc.CoarseGrainRNA()
         self.minimal_multiloop.from_file('test/forgi/threedee/data/minimal_multiloop.cg')
-        for key in self.minimal_multiloop.defines.keys():
+        for key in list(self.minimal_multiloop.defines.keys()):
           if key[0] =="s":
             ftug.add_virtual_residues(self.minimal_multiloop, key)
 
@@ -192,16 +192,16 @@ class TestAtomPosition_VirtualAtoms(unittest.TestCase):
         """ Number of atoms for each nucleotide"""
         for i in range(1,65):   
             # non-sidechain atoms
-            self.assertEqual(len(self.va1[1].keys()), 9)
+            self.assertEqual(len(list(self.va1[1].keys())), 9)
             #Side-chain atoms depend on nucleotide
-            self.assertGreaterEqual(len(self.va2[1].keys()), 15)
+            self.assertGreaterEqual(len(list(self.va2[1].keys())), 15)
 
 
     def test_virtual_atoms_intranucleotide_distances_stem_nosidechain(self):
         """ distance between two atoms of same nucleotide IN STEM """
-        for i in it.chain(range(1,10)+range(63,72)):
-            for k1, a1 in self.va1[i].items():
-                for k2, a2 in self.va1[i].items():
+        for i in it.chain(list(range(1,10))+list(range(63,72))):
+            for k1, a1 in list(self.va1[i].items()):
+                for k2, a2 in list(self.va1[i].items()):
                     if k1==k2: continue
                     dist=ftuv.magnitude(a1-a2)
                     self.assertLess(dist, 20, msg="Nucleotide {} too big: Distance between "
@@ -210,9 +210,9 @@ class TestAtomPosition_VirtualAtoms(unittest.TestCase):
                                                   "{} and {} is {}".format(i, k1, k2, dist) )
     def test_virtual_atoms_intranucleotide_distances_stem_withsidechain(self):
         """ distance between two atoms of same nucleotide IN STEM """
-        for i in it.chain(range(1,10)+range(63,72)):
-            for k1, a1 in self.va2[i].items():
-                for k2, a2 in self.va2[i].items():
+        for i in it.chain(list(range(1,10))+list(range(63,72))):
+            for k1, a1 in list(self.va2[i].items()):
+                for k2, a2 in list(self.va2[i].items()):
                     if k1==k2: continue
                     dist=ftuv.magnitude(a1-a2)
                     self.assertLess(dist, 30, msg="Nucleotide {} too big: Distance between "
@@ -223,7 +223,7 @@ class TestAtomPosition_VirtualAtoms(unittest.TestCase):
         """ distance between two atoms that pair in stem """
         for i in range(1,10):
             for j in range (71,62):
-                mindist=min(ftuv.magnitude(a1-a2) for a1 in self.va2[i].values() for a2 in self.va2[j].values())
+                mindist=min(ftuv.magnitude(a1-a2) for a1 in list(self.va2[i].values()) for a2 in list(self.va2[j].values()))
                 self.assertLess(dist, 20, msg="Distance between nucleotide {} and {} is too big: "
                                               "the minimal distance is {}".format(i, j, mindist))
                 self.assertGreater(dist, 1.1, msg="Distance between nucleotide {} and {} is too small: "

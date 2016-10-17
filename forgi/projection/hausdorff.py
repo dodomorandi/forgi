@@ -1,4 +1,4 @@
-from __future__ import print_function, absolute_import, division
+
 import sys, math
 import numpy as np
 from ..threedee.utilities import vector as ftuv
@@ -89,7 +89,7 @@ def increase_range(to_iterate, to_skip):
                     dists[dd]=norm(dd)
         oldlen=to_iterate[-1][0][0]**2+to_iterate[-1][0][1]**2
         #print ("sorting {} elements for newlength {}".format(len(dists.keys()), newlength))
-        for x in sorted(dists.keys(), key=lambda x: dists[x]):
+        for x in sorted(list(dists.keys()), key=lambda x: dists[x]):
             if length<dists[x]<newlength:
                 to_iterate.append((x, dists[x]))
                 if x[0]**2+x[1]**2>oldlen:
@@ -101,7 +101,7 @@ def increase_range(to_iterate, to_skip):
                 dd=(dx,dy)
                 dists[dd]=norm(dd)
         oldlen=0
-        for x in sorted(dists.keys(), key=lambda x: dists[x]):
+        for x in sorted(list(dists.keys()), key=lambda x: dists[x]):
             if not dists[x]<length:
                 continue
             to_iterate.append((x, dists[x]))
@@ -200,8 +200,8 @@ def hausdorff_distance_new(img, ref_img, cutoff=float("inf")):
         h2=maxh
         return max( h1, h2)
     except KeyboardInterrupt:
-        print("x: {}, y: {}, oldx: {}, oldy: {}, oldh: {}, maxh: {}, " 
-              "h1: {}, skip={}".format(x,y,oldx,oldy,oldh,maxh,h1,skip))
+        print(("x: {}, y: {}, oldx: {}, oldy: {}, oldh: {}, maxh: {}, " 
+              "h1: {}, skip={}".format(x,y,oldx,oldy,oldh,maxh,h1,skip)))
         import matplotlib.pyplot as plt
         fig, ax=plt.subplots(2)
         ax[0].imshow(ref_img, interpolation="none", cmap='gray')
@@ -596,14 +596,14 @@ def _try_startpoints(ref_img, scale, cg, start_points, starting_rotations,
             break
     sys.stdout.write("   \r")
     if verbose:
-        print("Global optimization performe!\n"
+        print(("Global optimization performe!\n"
               "\t{} local optimizations performed\n"
               "\t{} skipped (longest distance)\n"
-              "\t{} skipped (score)".format(no_heur, la_heur, score_heur))
+              "\t{} skipped (score)".format(no_heur, la_heur, score_heur)))
     if no_heur==0:
         if verbose:
-            print("During global optimization, NO SMALL DISTANCE could be found.\n"
-                  "\t{} attempts were skipped because the diameters didn't match.\n".format(la_heur))
+            print(("During global optimization, NO SMALL DISTANCE could be found.\n"
+                  "\t{} attempts were skipped because the diameters didn't match.\n".format(la_heur)))
         return float("inf"), None, [np.array([0,0]), 0, np.array([0,0])]
     return best_score, best_img, best_params
 
@@ -660,7 +660,7 @@ def globally_minimal_distance(ref_img, scale, cg,
 
     #Global search in vicinity of best match
     sp = get_start_points_near(10*start_points, best_params[0][0], best_params[0][1])
-    print("Current best score {}, refining on {} points".format(best_score, len(sp)))
+    print(("Current best score {}, refining on {} points".format(best_score, len(sp))))
     best_score1, best_img1, best_params1 =_try_startpoints(ref_img, scale, cg, sp,
                       [best_params[1]], [best_params[2]], local_maxiter, virtual_atoms,
                       use_heuristic, distance, verbose)
@@ -668,7 +668,7 @@ def globally_minimal_distance(ref_img, scale, cg,
         best_score=best_score1
         best_params=best_params1
         best_img=best_img1
-        print("Refinement helped.", best_score)
+        print(("Refinement helped.", best_score))
     #import matplotlib.pyplot as plt
     #fig, ax=plt.subplots(2)
     #ax[0].imshow(ref_img, interpolation="none", cmap='gray')

@@ -1,4 +1,4 @@
-from __future__ import division
+
 import unittest
 
 import forgi.threedee.model.coarse_grain as ftmc
@@ -123,8 +123,8 @@ class TestStats(unittest.TestCase):
         cg.coords["h0"]=np.array([0,1,3]), np.array([0,2,4])
         cg.add_bulge_coords_from_stems()
 
-        print (cg.coords["i0"])
-        print (cg.twists)
+        print((cg.coords["i0"]))
+        print((cg.twists))
         
         as1, as2 = cg.get_bulge_angle_stats("i0")
         
@@ -156,8 +156,8 @@ class TestStats(unittest.TestCase):
         cg.coords["h0"]=np.array([0,1,3]), np.array([0,2,4])
         cg.add_bulge_coords_from_stems()
 
-        print (cg.coords["i0"])
-        print (cg.twists)
+        print((cg.coords["i0"]))
+        print((cg.twists))
         
         as1, as2 = cg.get_bulge_angle_stats("i0")
         

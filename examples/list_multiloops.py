@@ -47,7 +47,7 @@ def main():
             for m in multiloops:
                 loop = [d for d in m if d[0] == 'm']
                 for l in loop:
-                    print l, bg.defines[l]
+                    print((l, bg.defines[l]))
                 loop.sort(key=lambda x: bg.defines[x][0] if bg.defines[x] else 1000000)
                 sizes=[]
                 for d in loop:
@@ -56,7 +56,7 @@ def main():
                     else:
                         sizes.append("-")
 
-                print "".join(loop), " ".join(map(str,sizes))
+                print(("".join(loop), " ".join(map(str,sizes))))
 
 if __name__ == '__main__':
     main()

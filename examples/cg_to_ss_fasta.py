@@ -24,7 +24,7 @@ def main():
         sys.exit(1)
 
     cg = fgb.BulgeGraph(args[0])
-    print cg.to_fasta_string()
+    print((cg.to_fasta_string()))
 
 if __name__ == '__main__':
     main()

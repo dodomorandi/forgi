@@ -1,11 +1,11 @@
 #!/usr/bin/python
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 
 __metaclass__ = type #New style classes in Python 2.x
 
@@ -55,7 +55,7 @@ if __name__=="__main__":
                 a=random.random()
                 b=random.random()
                 c=random.random()
-                print("Projecting from {}, {}, {}".format(a,b,c))
+                print(("Projecting from {}, {}, {}".format(a,b,c)))
                 proj=fpp.Projection2D(cg, project_virtual_atoms=True, proj_direction=[a,b,c], 
                                       project_virtual_residues=res_nums)
             if args.rotate==99999999999:
@@ -67,5 +67,5 @@ if __name__=="__main__":
             img, _= proj.rasterize(args.dpi, box)
             outname=filename+".dpi{}.width{}.{}.png".format(args.dpi, args.width, n)
             scipy.misc.imsave(outname, img, "png")
-            print("File {} written".format(outname))
+            print(("File {} written".format(outname)))
 

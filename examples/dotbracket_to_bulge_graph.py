@@ -70,7 +70,7 @@ def main():
     if len(args) == 2:
         bg.name = args[1]
 
-    print bg.to_bg_string()
+    print((bg.to_bg_string()))
 
 if __name__ == "__main__":
     main()

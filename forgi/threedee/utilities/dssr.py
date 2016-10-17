@@ -1,10 +1,10 @@
-from __future__ import absolute_import, division, print_function
+
 from future.builtins.disabled import *
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
 
-from past.builtins import basestring
+from past.builtins import str
 from pprint import pprint
 
 import json, warnings, sys
@@ -53,7 +53,7 @@ class DSSRAnnotation(object):
         :param cg: The CoarseGrainedRNA that corresponds to 
                    the same pdb file x3dna-dssr was run on.
         """
-        if isinstance(dssr, basestring):
+        if isinstance(dssr, str):
             if dssr[0]!="{":
                 with open(dssr) as f:
                     dssr = f.read()
@@ -111,7 +111,7 @@ class DSSRAnnotation(object):
         most_common = cg_stems.most_common()
         if len(most_common)>1:
             extra_info=""
-            for d in cg_stems.keys():
+            for d in list(cg_stems.keys()):
                 if d[0]=="i":
                     extra_info +="\n{} is {}:".format(d, self._cg.get_define_seq_str(d))
                     extra_info += "\n\t"+self._cg.seq+"\n\t" +self._cg.to_dotbracket_string()+"\n\t"
@@ -127,7 +127,7 @@ class DSSRAnnotation(object):
         for mc in most_common:
             if mc[0][0]=="s":
                 return mc[0]
-        raise RuntimeError("No stem matching dssr_stem {}, only single stranded region: {}.".format(dssr_stem, cg_stems.keys()))
+        raise RuntimeError("No stem matching dssr_stem {}, only single stranded region: {}.".format(dssr_stem, list(cg_stems.keys())))
     
     def compare_coaxial_stack_annotation(self, forgi_method="Tyagi", allow_single_bp=False):
         """
@@ -192,7 +192,7 @@ class DSSRAnnotation(object):
                 del dssr_helices[-1]
         # Merge stacks that overlap.
         while True:
-            for i,j in it.combinations(range(len(dssr_helices)),2):
+            for i,j in it.combinations(list(range(len(dssr_helices))),2):
                 stack_bag1 = dssr_helices[i]
                 stack_bag2 = dssr_helices[j]
                 if stack_bag1 & stack_bag2:

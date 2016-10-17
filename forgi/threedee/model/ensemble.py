@@ -1,6 +1,6 @@
-from __future__ import absolute_import, unicode_literals
-from __future__ import print_function
-from __future__ import division
+
+
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       map, next, oct, pow, range, round,
                       str, super, zip)

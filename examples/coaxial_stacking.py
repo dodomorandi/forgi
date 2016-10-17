@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import print_function, absolute_import, division, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       map, next, oct, open, pow, range, round,
                       str, super, zip) 
@@ -267,7 +267,7 @@ def interactive_analysis(data):
                 print (BOLD+title+OKBLUE)
                 show(filtered_data)
                 print(ENDC)
-                fs = input("Please add a filter (HELP to show help): ") #imported from future
+                fs = eval(input("Please add a filter (HELP to show help): ")) #imported from future
                 commands = fs.split(";")
                 for f in commands:
                     f=f.strip()
@@ -322,7 +322,7 @@ def interactive_analysis(data):
                     elif f.startswith("PLOT_DC"):
                         try:
                             _, key, from_, to_ = f.split()
-                            distribution_change(filtered_data, key, range(int(from_), int(to_)))
+                            distribution_change(filtered_data, key, list(range(int(from_), int(to_))))
                         except Exception as e:
                             print (FAIL+"Error: {}".format(e)+ENDC)
 
@@ -433,14 +433,14 @@ def interactive_analysis(data):
                             print (FAIL+"Invalid key for command PRINT"+ENDC)
                     elif f.startswith("E"):
                         try:
-                            exec f[2:] in globals(), locals()
+                            exec(f[2:], globals(), locals())
                         except Exception as e:
                             print (FAIL,type(e), e, "Cannot eval command '{}'".format(f[2:])+ENDC)
 
                     else:
                         try:
                             key, op, val = f.split()
-                            if op not in ops.keys():
+                            if op not in list(ops.keys()):
                                 print(FAIL+"Invalid filter. Expecting Operator ==, =, >, <, <= or >="+ENDC)
                                 continue
 
@@ -454,7 +454,7 @@ def interactive_analysis(data):
         except (KeyboardInterrupt, EOFError):
             print()
             while True:
-                if input("Exit? Y/N")=="Y":
+                if eval(input("Exit? Y/N"))=="Y":
                     exit = 1
                     break
                 else:

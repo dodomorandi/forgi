@@ -120,8 +120,8 @@ def iterate_over_interactions(mcannotate_lines):
             try:
                 (from_chain, from_base, to_chain, to_base) =  get_interacting_base_pairs(line)
             except ValueError as ve:
-                print >> sys.stderr, "ValueError:", ve
-                print >> sys.stderr, "line:", line
+                print("ValueError:", ve, file=sys.stderr)
+                print("line:", line, file=sys.stderr)
                 continue
 
             yield line.strip()
@@ -173,7 +173,7 @@ def get_dotplot(lines):
             #print line
 
             if parts1[0] in paired or parts1[1] in paired:
-                print >>sys.stderr, "paired:", parts1[0], parts1[1]
+                print("paired:", parts1[0], parts1[1], file=sys.stderr)
                 continue
 
             paired.add(parts1[0])

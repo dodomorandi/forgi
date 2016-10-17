@@ -74,11 +74,11 @@ remove overlapping base pairs before trying to obtain a nested structure.
 
 """
 
-from __future__ import division
+
 from random import choice
 from numpy import sum, average, zeros
-from rna2d import Pairs
-from dict2d import Dict2D
+from .rna2d import Pairs
+from .dict2d import Dict2D
 
 __author__ = "Sandra Smit"
 __copyright__ = "Copyright 2007, The Cogent Project"
@@ -504,7 +504,7 @@ class PairedRegions(list):
         """
         eb = self.enumeratedBoundaries()
         result = {}
-        for boundary_idx, boundary_value in eb.items():
+        for boundary_idx, boundary_value in list(eb.items()):
             if boundary_value in result:
                 raise ValueError(\
                     "Boundary value %s is not unique"%(boundary_value))
@@ -668,13 +668,13 @@ class ConflictMatrix(object):
                 raise ValueError("Can't convert data to Pairs")
 
         # handle the rows and columns in order and set RowOrder and ColOrder
-        ro = id_to_pr.keys()
+        ro = list(id_to_pr.keys())
         ro.sort()
-        co = id_to_pr.keys()
+        co = list(id_to_pr.keys())
         co.sort()
         conf = {} # dict of conflicts between blocks
-        for id1, bl in id_to_pr.items():
-            for id2, bl2 in id_to_pr.items():
+        for id1, bl in list(id_to_pr.items()):
+            for id2, bl2 in list(id_to_pr.items()):
                 if id2 < id1: # minimize number of calculations
                     continue
                 if id1 not in conf:
@@ -698,7 +698,7 @@ class ConflictMatrix(object):
         Input is ID of a particular region, return value are the IDs of
             all regions that conflict with the given region.
         """
-        return [k for k,v in self.Matrix[pr_id].items() if v is True]
+        return [k for k,v in list(self.Matrix[pr_id].items()) if v is True]
 
     def conflicting(self):
         """Return list of region IDs for conflicting regions
@@ -706,7 +706,7 @@ class ConflictMatrix(object):
         result = []
         cm = self.Matrix
         for pr_id in cm.RowOrder:
-            if contains_true(cm[pr_id].values()):
+            if contains_true(list(cm[pr_id].values())):
                 result.append(pr_id)
         return result
 
@@ -716,7 +716,7 @@ class ConflictMatrix(object):
         result = []
         cm = self.Matrix
         for pr_id in cm.RowOrder:
-            if not contains_true(cm[pr_id].values()):
+            if not contains_true(list(cm[pr_id].values())):
                 result.append(pr_id)
         return result
 
@@ -741,7 +741,7 @@ class ConflictMatrix(object):
                     if i in done: # no need to do them twice
                         continue
                     conf = [] # conflicting regions
-                    for k,v in cm[i].items():
+                    for k,v in list(cm[i].items()):
                         if v is True:
                             conf.append(k)
                     collection.extend(conf) # add conflict to collection
@@ -1118,7 +1118,7 @@ def opt_all(pairs, return_removed=False, goal='max',\
             rem.sort()
             removed.append(rem)
         nested = [prs.toPairs() for prs in result]
-        return zip(nested, removed)
+        return list(zip(nested, removed))
     
     nested = [prs.toPairs() for prs in result] 
     return nested
@@ -1333,14 +1333,14 @@ def add_back_non_conflicting(paired_regions, removed):
     
     added = True
     # process removed from 5' to 3'
-    order = [(pr.Start, pr.Id) for pr in new_removed.values()]
+    order = [(pr.Start, pr.Id) for pr in list(new_removed.values())]
     order.sort() # from low start value to high start value
     while added:
         added = False
         for start, region_id in order:
             pr1 = new_removed[region_id]
             is_conflicting = False
-            for pr2 in id_to_pr.values():
+            for pr2 in list(id_to_pr.values()):
                 if pr1.conflicting(pr2):
                     is_conflicting = True
                     new_removed[region_id] = pr1
@@ -1348,12 +1348,12 @@ def add_back_non_conflicting(paired_regions, removed):
             if not is_conflicting:
                 id_to_pr[region_id] = pr1
                 del new_removed[region_id]
-                order = [(pr.Start, pr.Id) for pr in new_removed.values()]
+                order = [(pr.Start, pr.Id) for pr in list(new_removed.values())]
                 order.sort() # from low start value to high start value
                 added = True
                 break
 
-    return PairedRegions(id_to_pr.values()), new_removed
+    return PairedRegions(list(id_to_pr.values())), new_removed
 
 
 # Conflict-elimination heuristic.
@@ -1406,7 +1406,7 @@ def conflict_elimination(pairs, sel_function, add_back=True,\
         prs, removed = add_back_non_conflicting(prs, removed)
         
     if return_removed:
-        rem = PairedRegions(removed.values()).toPairs()
+        rem = PairedRegions(list(removed.values())).toPairs()
         return prs.toPairs(), rem
     return prs.toPairs()
 
@@ -1515,7 +1515,7 @@ def inc_length(pairs, reversed=False, return_removed=False):
         if pr.Length not in length_pos_data:
             length_pos_data[pr.Length] = []
         length_pos_data[pr.Length].append((pr.Start, pr))
-    for v in length_pos_data.values():
+    for v in list(length_pos_data.values()):
         v.sort()
         if reversed:
             v.reverse()
@@ -1523,7 +1523,7 @@ def inc_length(pairs, reversed=False, return_removed=False):
     excluded = {}
     result = PairedRegions()
    
-    lengths = length_pos_data.keys()
+    lengths = list(length_pos_data.keys())
     lengths.sort()
     lengths.reverse() # longest regions first
 
@@ -1587,12 +1587,12 @@ def inc_range(pairs, reversed=False, return_removed=False):
         if rr not in range_pos_data:
             range_pos_data[rr] = []
         range_pos_data[rr].append((pr.Start, pr))
-    for v in range_pos_data.values():
+    for v in list(range_pos_data.values()):
         v.sort()
         if reversed:
             v.reverse()
 
-    ranges = range_pos_data.keys()
+    ranges = list(range_pos_data.keys())
     ranges.sort()
 
     result = PairedRegions()
@@ -1692,7 +1692,7 @@ def nussinov_restricted(pairs, return_removed=False):
         nested = p  # if not Pseudoknots: return structure
     else:
         all_items = [x for x,y in p] + [y for x,y in p]
-        max_idx = max(filter(None, all_items))+1
+        max_idx = max([_f for _f in all_items if _f])+1
         m = nussinov_fill(p, size=max_idx)
         nested = nussinov_traceback(m, 0, max_idx-1, p)
         nested = Pairs(list(nested))

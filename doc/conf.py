@@ -42,8 +42,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'forgi'
-copyright = u'2012-2016 Peter Kerpedjiev <pkerp@tbi.univie.ac.at>; 2015,2016 Bernhard Thiel <thiel@tbi.univie.ac.at>'
+project = 'forgi'
+copyright = '2012-2016 Peter Kerpedjiev <pkerp@tbi.univie.ac.at>; 2015,2016 Bernhard Thiel <thiel@tbi.univie.ac.at>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -186,8 +186,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'forgi.tex', u'forgi Documentation',
-   u'Peter Kerpedjiev', 'manual'),
+  ('index', 'forgi.tex', 'forgi Documentation',
+   'Peter Kerpedjiev', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -216,8 +216,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'forgi', u'forgi Documentation',
-     [u'Peter Kerpedjiev'], 1)
+    ('index', 'forgi', 'forgi Documentation',
+     ['Peter Kerpedjiev'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -230,8 +230,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'forgi', u'forgi Documentation',
-   u'Peter Kerpedjiev', 'forgi', 'One line description of project.',
+  ('index', 'forgi', 'forgi Documentation',
+   'Peter Kerpedjiev', 'forgi', 'One line description of project.',
    'Miscellaneous'),
 ]
 

@@ -1,4 +1,18 @@
-#### forgi Library for RNA Secondary Structure Analysis ####
+# forgi Library for RNA Secondary Structure Analysis #
+
+#### Differences between this fork and the @pkerpedjiev's repo ###
+
+This is a *brutal* port from Python2 to Python3, using 2py3 and some tweaking.
+I am almost sure there are *many* issues around. If you find one of them, let me know.
+
+#### TODO ####
+- [ ] Third example not working
+
+#### But why? ####
+
+Give a look [here](https://pythonclock.org/)...
+
+#### Back to the original README.md ####
 
 Full documentation: [http://www.tbi.univie.ac.at/~thiel/forgi/](http://www.tbi.univie.ac.at/~thiel/forgi/)
 
@@ -22,5 +36,5 @@ python setup.py install
 
 * Display an rna structure, save it to file, trim it and view it using eog
 
-  >>> pdb_id="ideal_1_3_4_6.pdb"; venv/bin/python examples/visualize_pdb.py forgi/threedee/data/${pdb_id} --output /tmp/${pdb_id}.png; mogrify -trim /tmp/${pdb_id}.png; eog /tmp/${pdb_id}.png
+  >>> pdb_id="ideal_1_3_4_6.pdb"; python examples/visualize_pdb.py forgi/threedee/data/${pdb_id} --output /tmp/${pdb_id}.png; mogrify -trim /tmp/${pdb_id}.png; eog /tmp/${pdb_id}.png
 

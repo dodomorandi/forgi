@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
@@ -24,11 +24,11 @@ class observedDict(dict):
     def __delitem__(self, key):
         super(observedDict, self).__delitem__(key)
     def clear(self):
-        for key in self.keys():
+        for key in list(self.keys()):
             self.on_change(key)
         super(observedDict, self).clear()
     def update(self, other_dict):
-        for key in other_dict.keys():
+        for key in list(other_dict.keys()):
             self.on_change(key)
         super(observedDict, self).update(other_dict)
     def setdefault (self, key, value=None):

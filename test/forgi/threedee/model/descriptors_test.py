@@ -18,7 +18,7 @@ class TestGyration(unittest.TestCase):
         a1 = np.array([[1., 1., 1.], [0., 0., 0.], [-1., -1., -1.], [-2,-2,-2]])
         rog = ftmd.radius_of_gyration(a1)
         g_tensor = ftmd.gyration_tensor(a1, diagonalize=True)
-        print(rog, g_tensor)
+        print((rog, g_tensor))
         #the first invariant is the rog
         self.assertAlmostEqual(g_tensor[0,0]+g_tensor[1,1]+g_tensor[2,2], rog**2)
 

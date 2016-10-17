@@ -16,7 +16,7 @@ def print_rosetta_constraints(bg):
     '''
     for s in bg.stem_iterator():
         for i in range(bg.stem_length(s)):
-            print "STEM PAIR %d %d" % (bg.defines[s][0] + i, bg.defines[s][3] - i)
+            print(("STEM PAIR %d %d" % (bg.defines[s][0] + i, bg.defines[s][3] - i)))
 
 def main():
     usage = """
@@ -48,9 +48,9 @@ def main():
         param_str = ""
 
         # group the defines into pairs of intervals
-        pairs_s1 = zip(*[iter(bg.defines[s1])]*2)
-        pairs_s2 = zip(*[iter(bg.defines[s2])]*2)
-        pairs_e1 = zip(*[iter(bg.defines[e1])]*2)
+        pairs_s1 = list(zip(*[iter(bg.defines[s1])]*2))
+        pairs_s2 = list(zip(*[iter(bg.defines[s2])]*2))
+        pairs_e1 = list(zip(*[iter(bg.defines[e1])]*2))
         
         # find the longest contiguous stretches of nucleotides
         intervals = pairs_s1 + pairs_e1 + pairs_s2

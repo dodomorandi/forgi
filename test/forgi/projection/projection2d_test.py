@@ -1,10 +1,10 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 
 import unittest, sys
 import numpy as np
@@ -73,7 +73,7 @@ class Projection2DBasicTest(unittest.TestCase):
     def test_projection_with_virtual_atoms(self):
         cg = ftmc.CoarseGrainRNA('test/forgi/threedee/data/1y26.cg')
         proj=fpp.Projection2D(cg, [1.,1.,1.], project_virtual_atoms=True)
-        all_vas = sum(len(cg.virtual_atoms(i).keys()) for d in cg.defines.keys() 
+        all_vas = sum(len(list(cg.virtual_atoms(i).keys())) for d in list(cg.defines.keys()) 
                                                       for i in cg.define_residue_num_iterator(d))
         self.assertEqual(all_vas, proj._virtual_atoms.shape[0])
         self.assertGreater(proj._virtual_atoms.shape[0], 5)
@@ -82,7 +82,7 @@ class Projection2DBasicTest(unittest.TestCase):
         cg = ftmc.CoarseGrainRNA('test/forgi/threedee/data/1y26.cg')
         proj=fpp.Projection2D(cg, [1.,1.,1.], project_virtual_atoms="selected")
         proj_all=fpp.Projection2D(cg, [1.,1.,1.], project_virtual_atoms=True)
-        all_vas = sum(len(cg.virtual_atoms(i).keys()) for d in cg.defines.keys() 
+        all_vas = sum(len(list(cg.virtual_atoms(i).keys())) for d in list(cg.defines.keys()) 
                                                       for i in cg.define_residue_num_iterator(d))
         self.assertLess(proj._virtual_atoms.shape[0], all_vas)
         self.assertLess(proj._virtual_atoms.shape[0], proj_all._virtual_atoms.shape[0])

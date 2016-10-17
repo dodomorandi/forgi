@@ -145,7 +145,7 @@ def get_residue_num_list(cg, d):
 
     return nucleotide_list
 
-def extract_extra_links(cg, cutoff_dist=25, bp_distance=sys.maxint,
+def extract_extra_links(cg, cutoff_dist=25, bp_distance=sys.maxsize,
                        correct_links = None):
     '''
     Get a list of extra_links that are within a certain distance of each 
@@ -254,17 +254,17 @@ def main():
         mccs += [mcc]
 
     if options.sort_by == 'pca':
-        print >>sys.stderr, "Sorting by pca"
+        print("Sorting by pca", file=sys.stderr)
         ix = reorder_structs(pair_bitmaps) 
     else:
-        print >>sys.stderr, "Sorting by mcc"
+        print("Sorting by mcc", file=sys.stderr)
         ix = np.argsort(-np.array(mccs))
 
     new_array = [0 for i in range(len(ix))]
     for i,x in enumerate(ix):
         new_array[i] = structs[x]
 
-    print output_template.format(json.dumps(new_array))
+    print(output_template.format(json.dumps(new_array)))
 
 if __name__ == '__main__':
     main()

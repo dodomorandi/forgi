@@ -1,11 +1,11 @@
 #!/usr/bin/python
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       int, map, next, oct, open, pow, range, round,
                       str, super, zip)
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 
 import sys, random, math, os
 import itertools as it
@@ -68,8 +68,8 @@ def main(args):
             except:
                 target_elems=args.show_distances.split(",")
             else:
-                if num_elems>len(proj._coords.keys()):
-                    raise ValueError("--show-distances must not be greater {} for the current projection ({}:'{}')".format(len(proj._coords.keys()), i, file_))
+                if num_elems>len(list(proj._coords.keys())):
+                    raise ValueError("--show-distances must not be greater {} for the current projection ({}:'{}')".format(len(list(proj._coords.keys())), i, file_))
                 elems=list(proj._coords.keys())
                 random.shuffle(elems)
                 while len(target_elems)<num_elems:

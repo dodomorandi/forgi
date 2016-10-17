@@ -1,12 +1,12 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 from builtins import (ascii, bytes, chr, dict, filter, hex, input,
                       map, next, oct, open, pow, range, round,
                       str, super, zip) 
 # int is not imported from builtins here for performance reasons. 
 # See: https://github.com/PythonCharmers/python-future/issues/136
 from future.builtins.disabled import (apply, cmp, coerce, execfile,
-                             file, long, raw_input, reduce, reload,
-                             unicode, xrange, StandardError)
+                             file, int, raw_input, reduce, reload,
+                             str, xrange, Exception)
 
 import forgi.threedee.utilities.vector as ftuv
 import forgi.threedee.utilities.graph_pdb as ftug
@@ -132,8 +132,8 @@ def diameter(Points):
         diam,pair = max([((p[0]-q[0])**2 + (p[1]-q[1])**2, (p,q))
                     for p,q in rotatingCalipers(Points)],key=lambda x: x[0])    
     except:
-        print(repr([((p[0]-q[0])**2 + (p[1]-q[1])**2, (p,q))
-                     for p,q in rotatingCalipers(Points)]))
+        print((repr([((p[0]-q[0])**2 + (p[1]-q[1])**2, (p,q))
+                     for p,q in rotatingCalipers(Points)])))
         raise
     return pair
 
@@ -249,7 +249,7 @@ class Projection2D(object):
         v1=np.array(v1)
         v2=np.array(v2)
         shift=(v1+v2)/2
-        for key,edge in self._coords.items():
+        for key,edge in list(self._coords.items()):
             self._coords[key]=(edge[0]-shift, edge[1]-shift)
         
         if project_virtual_atoms:
@@ -259,10 +259,10 @@ class Projection2D(object):
         rot=math.atan2(*(v2-v1))
         rot=math.degrees(rot)
         self.rotate(rot)
-        xmean=np.mean([ x[0] for p in self._coords.values() for x in p])
-        ymean=np.mean([ x[1] for p in self._coords.values() for x in p])
+        xmean=np.mean([ x[0] for p in list(self._coords.values()) for x in p])
+        ymean=np.mean([ x[1] for p in list(self._coords.values()) for x in p])
         mean=np.array([xmean,ymean])
-        for key,edge in self._coords.items():
+        for key,edge in list(self._coords.items()):
             self._coords[key]=(edge[0]-mean, edge[1]-mean)
         #Thanks to numpy broadcasting, this works without a loop.
         if project_virtual_atoms:
@@ -285,7 +285,7 @@ class Projection2D(object):
         c=np.cos(angle)
         s=np.sin(angle)        
         self._proj_graph=None
-        for key,edge in self._coords.items():
+        for key,edge in list(self._coords.items()):
             self._coords[key]=(rotate2D(edge[0], c, s), rotate2D(edge[1], c,s))
 
         transRotMat=np.array([[c, s],[-s, c]])
@@ -392,7 +392,7 @@ class Projection2D(object):
         """
         
         # Exclude m and i Elements, as they are always flanked by stems.
-        return ( p for k,x in self._coords.items() for p in x if k[0]!="i" and k[0]!="m") 
+        return ( p for k,x in list(self._coords.items()) for p in x if k[0]!="i" and k[0]!="m") 
     ### Functions returning descriptors of the projection, mostly independent on the resolution ###
 
     ### Function returning descriptors of the projection, dependent on the resolution ###    
@@ -403,7 +403,7 @@ class Projection2D(object):
         :param margin: increase the bounding box in every direction by this margin.
         :returns: left, right, bottom, top
         """
-        points=[ p for x in self._coords.values() for p in x ]
+        points=[ p for x in list(self._coords.values()) for p in x ]
         #print("P", points)
         left=min(x[0] for x in points)-margin
         right=max(x[0] for x in points)+margin
@@ -442,9 +442,9 @@ class Projection2D(object):
         """
         import networkx as nx
         if degree is None:
-            return len([x for x in nx.degree(self.proj_graph).values() if x>=3])
+            return len([x for x in list(nx.degree(self.proj_graph).values()) if x>=3])
         else:
-            return len([x for x in nx.degree(self.proj_graph).values() if x==degree])
+            return len([x for x in list(nx.degree(self.proj_graph).values()) if x==degree])
 
     def get_cyclebasis_len(self):
         """
@@ -494,13 +494,13 @@ class Projection2D(object):
         import networkx as nx
         lengths={}
         target={}
-        for leaf, degree in nx.degree(self.proj_graph).items():        
+        for leaf, degree in list(nx.degree(self.proj_graph).items()):        
             if degree!=1: continue              
             lengths[leaf]=0          
             previous=None
             current=leaf
             while True:
-                next=[ x for x in self.proj_graph[current].keys() if x != previous ]
+                next=[ x for x in list(self.proj_graph[current].keys()) if x != previous ]
                 assert len(next)==1
                 next=next[0]
                 lengths[leaf]+=ftuv.vec_distance(current, next)
@@ -791,7 +791,7 @@ class Projection2D(object):
             if ax is None:
                 raise TypeError()
 
-            if isinstance(c,basestring):
+            if isinstance(c,str):
                 color = c     # ie. use colors.colorConverter.to_rgba_array(c)
             else:
                 color = None  # use cmap, norm after collection is created
@@ -872,7 +872,7 @@ class Projection2D(object):
         lprop=copy.copy(line2dproperties)
         if virtual_atoms and len(self._virtual_atoms)>0:
             circles(self._virtual_atoms[:,0],self._virtual_atoms[:,1], c="gray", s=0.7, ax=ax)
-        for label,(s,e) in self._coords.items():
+        for label,(s,e) in list(self._coords.items()):
             if "color" not in line2dproperties:
                 if label.startswith("s"):
                     lprop["color"]="green"
@@ -948,7 +948,7 @@ class Projection2D(object):
         """
         import networkx as nx
         proj_graph=nx.Graph()
-        for key, element in self._coords.items():
+        for key, element in list(self._coords.items()):
             crs=self.crossingPoints
             sortedCrs=ftuv.sortAlongLine(element[0], element[1], [x[0] for x in crs[key]])     
             oldpoint=None
@@ -989,7 +989,7 @@ class Projection2D(object):
                     try:             va.append(residue["O3'"])
                     except KeyError: pass
                 else:
-                    for pos in residue.values():
+                    for pos in list(residue.values()):
                         va.append(pos)
             if va:
                 self._virtual_atoms=np.dot(np.array(va), basis)
@@ -1014,10 +1014,10 @@ class Projection2D(object):
                 if ftuv.vec_distance(node1, node2)<cutoff:
                     newnode=ftuv.middlepoint(node1, node2)
                     #self.proj_graph.add_node(newnode)
-                    for neighbor in self.proj_graph.edge[node1].keys():
+                    for neighbor in list(self.proj_graph.edge[node1].keys()):
                         self.proj_graph.add_edge(newnode, neighbor, 
                                                 attr_dict=self.proj_graph.edge[node1][neighbor])
-                    for neighbor in self.proj_graph.edge[node2].keys():
+                    for neighbor in list(self.proj_graph.edge[node2].keys()):
                         self.proj_graph.add_edge(newnode, neighbor, 
                                                  attr_dict=self.proj_graph.edge[node2][neighbor])
                     if newnode!=node1: #Equality can happen because of floating point inaccuracy
@@ -1052,7 +1052,7 @@ class Projection2D(object):
                                 self.proj_graph.add_edge(target, newnode,
                                                          attr_dict=attr_dict)             
                             if newnode!=node: #Equality possible bcse of floating point inaccuracy
-                                for neighbor in self.proj_graph.edge[node].keys():
+                                for neighbor in list(self.proj_graph.edge[node].keys()):
                                     attr_dict=self.proj_graph.edge[node][neighbor]
                                     self.proj_graph.add_edge(newnode, neighbor, 
                                                              attr_dict=attr_dict)

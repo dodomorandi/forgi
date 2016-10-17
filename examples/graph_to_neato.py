@@ -13,11 +13,11 @@ def print_neato(bg):
     connection_lines = ''
     fontsize=20
 
-    print "graph G {"
-    print "\tgraph [overlap=false,splines=true];"
-    print "\tnode [shape=box];"
+    print("graph G {")
+    print("\tgraph [overlap=false,splines=true];")
+    print("\tnode [shape=box];")
 
-    for key2 in bg.defines.keys():
+    for key2 in list(bg.defines.keys()):
         # Create the nodes with a different color for each type of element
         if key2[0] == 's':
             node_lines += '\t{node [style=filled,fillcolor="#B3E2CD",fontsize=%d,label=\"%s\\n(%d)\"] %s};\n' % (fontsize,key2, bg.stem_length(key2), key2)
@@ -60,13 +60,13 @@ def print_neato(bg):
             for key2 in bg.edges[key1]:
                 connection_lines += "\t%s -- %s;\n" % (key1, key2)
 
-    for key1 in bg.longrange.keys():
+    for key1 in list(bg.longrange.keys()):
         for key2 in bg.longrange[key1]:
             connection_lines += "\t%s -- %s [style=dashed]" % (key1, key2)
 
-    print node_lines
-    print connection_lines
-    print "}"
+    print(node_lines)
+    print(connection_lines)
+    print("}")
 
 
     #print bg.get_named_define
